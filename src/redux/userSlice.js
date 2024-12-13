@@ -19,41 +19,39 @@ const userSlice = createSlice({
       state.isLoggedIn = true;
       state.accessToken = action.payload.accessToken;
     },
-    loginFailure: (state) => {
+    loginFailure: (state, action) => {
       state.isFetching = false;
-      state.error = true;
+      state.error = action.payload; 
     },
-    logout(state) {
+    logout: (state) => {
       state.isLoggedIn = false;
       state.accessToken = null;
       state.currentUser = null;
     },
-    //
+    // Register reducers
     registerStart: (state) => {
       state.isFetching = true;
     },
     registerSuccess: (state, action) => {
       state.isFetching = false;
       state.currentUser = action.payload;
+      state.isLoggedIn = true; 
     },
-    registerFailure: (state) => {
+    registerFailure: (state, action) => {
       state.isFetching = false;
-      state.error = true;
+      state.error = action.payload; 
     },
-
     updateUserStart: (state) => {
       state.isFetching = true;
       state.error = false;
     },
     updateUserSuccess: (state, action) => {
       state.isFetching = false;
-      state.users[
-        state.users.findIndex((item) => item._id === action.payload.id)
-      ] = action.payload.user;
+      state.currentUser = action.payload; 
     },
-    updateUserFailure: (state) => {
+    updateUserFailure: (state, action) => {
       state.isFetching = false;
-      state.error = true;
+      state.error = action.payload; 
     },
   },
 });
@@ -70,4 +68,5 @@ export const {
   updateUserSuccess,
   updateUserFailure,
 } = userSlice.actions;
+
 export default userSlice.reducer;

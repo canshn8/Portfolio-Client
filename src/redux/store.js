@@ -1,11 +1,18 @@
 // app/store.js
 import { configureStore } from "@reduxjs/toolkit";
-import projectSlice from "./projectSlice";
+import { thunk } from 'redux-thunk';
+import projectReducer from "./projectSlice";
+import userReducer  from "./userSlice";
+
 
 const store = configureStore({
   reducer: {
-    project: projectSlice,
+    project: projectReducer,
+    user: userReducer,
+
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(thunk),
 });
 
 export default store;

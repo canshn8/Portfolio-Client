@@ -12,20 +12,24 @@ import {
 import { addProjectSuccess, getProjectSuccess } from "./projectSlice";
 import axios from "axios";
 
-export const login = async (dispatch, user) => {
+export const login = (user) => async (dispatch) => {
   dispatch(loginStart());
   try {
-    const res = await axios.post("/auth/login", user);
+    const res = await axios.post("http://localhost:5000/api/auth/login", user);
     dispatch(loginSuccess(res.data));
   } catch (err) {
     dispatch(loginFailure());
   }
 };
 
-export const register = async (dispatch, user) => {
+
+
+
+
+export const register = (user) => async (dispatch) => {
   dispatch(registerStart());
   try {
-    const res = await axios.post("/auth/register", user);
+    const res = await axios.post("http://localhost:5000/api/auth/register", user);
     dispatch(registerSuccess(res.data));
   } catch (err) {
     dispatch(registerFailure());
@@ -48,7 +52,7 @@ export const addProject = async (project, dispatch) => {
 
 export const getProject = async (dispatch) => {
   try {
-    const res = await axios.get("/project");
+    const res = await axios.get("http://localhost:5000/api/project");
     dispatch(getProjectSuccess(res.data));
   } catch {}
 };

@@ -11,16 +11,16 @@ function Project() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const getProject = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/project/" + id);
-        setProject(res.data);
-      } catch {}
-    };
-    getProject();
-    console.log(project);
-  }, [id]);
+  // useEffect(() => {
+  //   const getProject = async () => {
+  //     try {
+  //       const res = await axios.get("http://localhost:5000/api/project/" + id);
+  //       setProject(res.data);
+  //     } catch {}
+  //   };
+  //   getProject();
+  //   console.log(project);
+  // }, [id]);
 
   return (
     <div>
