@@ -4,16 +4,16 @@ import axios from "axios";
 
 export default function Projects() {
   const [projects, setProject] = useState([]);
-  useEffect(() => {
-    const getProject = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/project");
-        setProject(res.data);
-      } catch (err) {}
-    };
-    getProject();
-    console.log(projects);
-  }, [projects]);
+  // useEffect(() => {
+  //   const getProject = async () => {
+  //     try {
+  //       const res = await axios.get("http://localhost:5000/api/project");
+  //       setProject(res.data);
+  //     } catch (err) {}
+  //   };
+  //   getProject();
+  //   console.log(projects);
+  // }, [projects]);
   return (
     <div>
       <div class="flex flex-wrap justify-center mt-10">

@@ -1,27 +1,36 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { loginStart, registerStart } from '../redux/userSlice'; 
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { register, login } from '../redux/apiCalls'; 
+import { useNavigate } from 'react-router-dom';
+import withGuest  from "../HOC/withGuest";
 
 const Account = () => {
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state);
   const [isLogin, setIsLogin] = useState(false); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState(''); 
+  const [username, setUsername] = useState('');
 
-  const handleClick = (e) => {
-    e.preventDefault(); 
-    const userData = { email, password, username: isLogin ? undefined : username };
-    console.log(userData);
-    console.log(isLogin);
-    
-    if (isLogin) {
-        dispatch(loginStart(userData));
-    } else {
-        dispatch(registerStart(userData));
+  const handleClick = async (e) => {
+    e.preventDefault();
+    const userData = isLogin
+      ? { username, password } 
+      : { email, username, password };
+
+    try {
+      if (isLogin) {
+        dispatch(login(userData));
+      } else {
+        dispatch(register(userData));
+      }
+    } catch (err) {
+      console.error("Request failed:", err);
     }
- };
+    console.log(user);
+  };
  
 
   return (
@@ -30,9 +39,22 @@ const Account = () => {
         <h2 className="text-3xl font-bold text-center text-white mb-6">
           {isLogin ? 'Login' : 'Register'}
         </h2>
-        <form onSubmit={handleClick}>
+        <form>
           {!isLogin && (
             <div className="mb-4">
+            <label className="block text-gray-200 mb-2">Email</label>
+            <input
+              type="email"
+              className="w-full px-4 py-2 rounded-lg bg-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)} 
+              required={!isLogin} 
+            />
+          </div>
+           
+          )}
+           <div className="mb-4">
               <label className="block text-gray-200 mb-2">Username</label>
               <input
                 type="text"
@@ -43,18 +65,6 @@ const Account = () => {
                 required={!isLogin} 
               />
             </div>
-          )}
-          <div className="mb-4">
-            <label className="block text-gray-200 mb-2">Email</label>
-            <input
-              type="email"
-              className="w-full px-4 py-2 rounded-lg bg-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)} 
-              required
-            />
-          </div>
           <div className="mb-6">
             <label className="block text-gray-200 mb-2">Password</label>
             <input
@@ -67,6 +77,7 @@ const Account = () => {
             />
           </div>
           <button
+            onClick={handleClick}
             type="submit"
             className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 rounded-lg transition duration-200"
           >

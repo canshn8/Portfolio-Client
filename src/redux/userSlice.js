@@ -1,55 +1,46 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+
+const storedUser = localStorage.getItem("user");
+
+const initialState = {
+  currentUser: storedUser ? JSON.parse(storedUser) : null,
+  isFetching: false,
+  error: false,
+  isLoggedIn: storedUser ? true : false,
+};
 
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    currentUser: null,
-    accessToken: null,
-    isFetching: false,
-    isLoggedIn: false,
-    error: false,
-  },
+  initialState,
   reducers: {
     loginStart: (state) => {
       state.isFetching = true;
+      state.error = false;
     },
     loginSuccess: (state, action) => {
       state.isFetching = false;
       state.currentUser = action.payload;
       state.isLoggedIn = true;
-      state.accessToken = action.payload.accessToken;
+      localStorage.setItem("user", JSON.stringify(action.payload)); 
     },
-    loginFailure: (state, action) => {
+    loginFailure: (state) => {
       state.isFetching = false;
-      state.error = action.payload; 
+      state.error = true;
     },
     logout: (state) => {
-      state.isLoggedIn = false;
-      state.accessToken = null;
       state.currentUser = null;
+      state.isLoggedIn = false;
+      localStorage.removeItem("user");
     },
-    // Register reducers
     registerStart: (state) => {
       state.isFetching = true;
     },
     registerSuccess: (state, action) => {
       state.isFetching = false;
-      state.currentUser = action.payload;
-      state.isLoggedIn = true; 
+      state.isLoggedIn = true;
+      state.currentUser = action.payload;  
     },
     registerFailure: (state, action) => {
-      state.isFetching = false;
-      state.error = action.payload; 
-    },
-    updateUserStart: (state) => {
-      state.isFetching = true;
-      state.error = false;
-    },
-    updateUserSuccess: (state, action) => {
-      state.isFetching = false;
-      state.currentUser = action.payload; 
-    },
-    updateUserFailure: (state, action) => {
       state.isFetching = false;
       state.error = action.payload; 
     },
@@ -60,13 +51,10 @@ export const {
   loginStart,
   loginSuccess,
   loginFailure,
-  logout,
   registerStart,
   registerSuccess,
   registerFailure,
-  updateUserStart,
-  updateUserSuccess,
-  updateUserFailure,
+  logout,
 } = userSlice.actions;
 
 export default userSlice.reducer;

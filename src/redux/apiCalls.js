@@ -10,29 +10,32 @@ import {
   updateUserFailure,
 } from "./userSlice";
 import { addProjectSuccess, getProjectSuccess } from "./projectSlice";
+import request from "../api";
+
 import axios from "axios";
 
 export const login = (user) => async (dispatch) => {
   dispatch(loginStart());
   try {
-    const res = await axios.post("http://localhost:5000/api/auth/login", user);
-    dispatch(loginSuccess(res.data));
+    const res = await request("POST", "/auth/login", user);
+    dispatch(loginSuccess(res.data));  
+    console.log(res.data);
+    
+
+    localStorage.setItem("user", JSON.stringify(res.data));
   } catch (err) {
     dispatch(loginFailure());
+    console.error("Login failed:", err);
   }
 };
 
-
-
-
-
 export const register = (user) => async (dispatch) => {
-  dispatch(registerStart());
+  dispatch(loginStart());
   try {
-    const res = await axios.post("http://localhost:5000/api/auth/register", user);
-    dispatch(registerSuccess(res.data));
+    const res = await request("POST", "/auth/register", user);  
+    dispatch(registerSuccess(res)); 
   } catch (err) {
-    dispatch(registerFailure());
+    dispatch(loginFailure()); 
   }
 };
 
