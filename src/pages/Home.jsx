@@ -9,17 +9,16 @@ import Filter from "../component/Filter";
 
 const Home = () => {
   return (
-    <div class="grid items-center grid-cols-12 justify-center">
-      {/* <Header />
-      <Body />
-      <Drawer /> */}
-      <div class="col-span-4 p-4  text-white">
-        <Filter />
-      </div>
-      <div class="col-span-8 p-4 text-white">
-        <Projects />
-      </div>
+  //   <div class="flex flex-col md:flex-row gap-4 p-4">
+  //   <div class="flex-4 p-4  text-white">
+  //     <Filter />
+  //   </div>
+    
+    <div class=" p-4  text-white">
+      <Projects />
     </div>
+  
+
   );
 };
 

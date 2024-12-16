@@ -18,11 +18,11 @@ export const login = (user) => async (dispatch) => {
   dispatch(loginStart());
   try {
     const res = await request("POST", "/auth/login", user);
-    dispatch(loginSuccess(res.data));  
-    console.log(res.data);
-    
-
-    localStorage.setItem("user", JSON.stringify(res.data));
+    console.log("Response from API : ",res);
+    // const data = {...res}
+    // console.log(data);
+    dispatch(loginSuccess(res));  
+    localStorage.setItem("user", JSON.stringify(res));
   } catch (err) {
     dispatch(loginFailure());
     console.error("Login failed:", err);
