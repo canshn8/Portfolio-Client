@@ -4,25 +4,33 @@ import axios from "axios";
 import Filter from "./Filter";
 
 export default function Projects() {
-  const [projects, setProject] = useState([]);
+
+  const [projects, setProjects] = useState([]);
+
   useEffect(() => {
     const getProject = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/project");
-        setProject(res.data);
-      } catch (err) {}
+        setProjects(res.data);
+      } catch (err) {
+        console.log(err);
+      }
     };
-    getProject();
-    console.log(projects);
-  }, [projects]);
+
+    getProject(); 
+  }, []);
+
+
   return (
+
+
   <div class="flex flex-col md:flex-row mt-10">
     <div class="md:w-1/5 p-4 text-white">
       <Filter />
     </div>
 
 
-    <div class="md:w-4/5 p-0 text-white">
+    <div class="md:w-4/5 p-0 flex flex-col items-center justify-center mt-12">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       {projects?.map((project) => (
         <div class="p-4 max-w-sm">

@@ -6,12 +6,12 @@ import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 import Lab from "./pages/Lab";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Skills from "./pages/Skills";
 import Project from "./pages/Project";
 import Account from "./pages/Account";
 import Contact from "./pages/Contact";
-import Layout from "./component/Layout";
 import Profile from "./pages/Profile";
+import Layout from "./component/Layout";
+import CreateCard from "./pages/CreateCard";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const AppRoutes = () => {
     { path: "/", element: <Home /> },
     { path: "/about", element: <About /> },
     { path: "/contact", element: <Contact /> },
-    { path: "/skills", element: <Skills /> },
+    { path: "/create", element: <CreateCard /> },
     { path: "/sign", element: <Account /> },
     { path: "/profile", element: <Profile /> },
     { path: "/lab", element: <Lab /> },
@@ -42,11 +42,11 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-    <Layout>
-      <Router>
+    <Router>
+      <Layout>
         <AppRoutes />
-      </Router>
-    </Layout>
+      </Layout>
+    </Router>
   );
 };
 

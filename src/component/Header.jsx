@@ -1,10 +1,60 @@
-import React from "react";
+import React, {useState} from "react";
 import { FiGithub, FiInstagram } from "react-icons/fi";
 import { CiLinkedin } from "react-icons/ci";
 import { FaRegFilePdf } from "react-icons/fa6";
-import PP from "../assets/fixed.jpg";
+import PP from "../uploads/fixed.jpg";
+import axios from "axios";
 
-export default function Header() {
+const Header =() =>  {
+
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+
+  const handleLanguageSelect = (lang) => {
+    setSelectedLanguage(lang);
+    setIsModalOpen(false);
+  };
+
+
+  const handleDownloadTr = async () => {
+    try {
+      const response = await axios({
+        url: "http://localhost:5000/api/turkish-cv.pdf", 
+        method: "GET",
+        responseType: "blob",
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "CV_TR.pdf");
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Dosya indirilirken hata oluştu:", error);
+    }
+  };
+  
+  
+  const handleDownloadEn = async () => {
+    try {
+      const response = await axios({
+        url: "http://localhost:5000/api/english-cv.pdf", 
+        method: "GET",
+        responseType: "blob",
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "CV_EN.pdf");
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Dosya indirilirken hata oluştu:", error);
+    }
+  };
+
   return (
     <div class="mt-36 max-w-screen-lg mx-auto md:px-16 px-1">
       <img
@@ -37,14 +87,42 @@ export default function Header() {
         </a>
         <FiInstagram color="#d1dde6" size={"30px"} />
       </span>
-      <span className=" text-gray-50">
-        <button
-          type="button"
-          class="md:text-xl xl:text-base  flex gap-4 mt-14 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+      <button
+        onClick={() => setIsModalOpen(true)}
+        class="md:text-xl xl:text-base  flex gap-4 mt-14 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
         >
           Download <FaRegFilePdf size={"30px"} />
-        </button>
-      </span>
+      </button>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 text-white bg-gray-500 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-gray-900 p-8 rounded-lg shadow-lg w-96">
+            <h3 className="text-xl font-semibold mb-4">CV Dilini Seçiniz</h3>
+            <div className="flex flex-col space-y-4">
+              <button
+                onClick={() => handleDownloadTr ('Türkçe')}
+                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
+              >
+                Türkçe
+              </button>
+              <button
+                onClick={() => handleDownloadEn ('English')}
+                className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+              >
+                English
+              </button>
+            </div>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="mt-4 w-full text-gray-500 hover:text-gray-700"
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
-}
+};
+export default Header;
