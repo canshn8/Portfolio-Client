@@ -6,9 +6,10 @@ const withAuth = (Component) => {
   return (props) => {
     const { currentUser } = useSelector((state) => state.user);
 
-    if (!currentUser) {
-      return <Navigate to="/sign" />;
-    }
+    // if (!currentUser) {
+    //   return <Navigate to="/" />; 
+    // }
+    {/*Kullanıcıyı Zorunlu Girişe Zorlamak İçin Bu Yorum Satırı Açılır */}
 
     return <Component {...props} />;
   };

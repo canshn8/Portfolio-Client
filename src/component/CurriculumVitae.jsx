@@ -1,5 +1,5 @@
 import React from "react";
-import PP from "../assets/fixed.jpg";
+import PP from "../uploads/fixed.jpg";
 
 export default function CurriculumVitae() {
   return (

@@ -1,13 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// localStorage'dan kullanıcıyı alalım, varsa
 const storedUser = localStorage.getItem("user");
 
 const initialState = {
   currentUser: storedUser ? JSON.parse(storedUser) : null,
   isFetching: false,
   error: false,
-  isLoggedIn: storedUser ? true : false, // Eğer storedUser varsa, giriş yapılmış kabul edilir
+  isLoggedIn: storedUser ? true : false, 
 };
 
 const userSlice = createSlice({
@@ -36,7 +35,6 @@ const userSlice = createSlice({
     logout: (state) => {
       state.currentUser = null;
       state.isLoggedIn = false;
-      // Çıkış yapıldığında localStorage'dan kullanıcıyı sil
       localStorage.removeItem("user");
     },
     registerStart: (state) => {
@@ -46,12 +44,11 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.isLoggedIn = true;
       state.currentUser = action.payload;  
-      // Kayıt işlemi başarılı olduğunda bilgileri localStorage'a kaydet
       localStorage.setItem("user", JSON.stringify(action.payload));
     },
     registerFailure: (state, action) => {
       state.isFetching = false;
-      state.error = action.payload; // Error mesajını payload'dan alıyoruz
+      state.error = action.payload; 
     },
   },
 });
