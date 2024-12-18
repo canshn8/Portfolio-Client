@@ -25,7 +25,7 @@ export default function Projects() {
 
 
   <div class="flex flex-col md:flex-row mt-10">
-    <div class="md:w-1/5 p-4 text-white">
+    <div class="md:w-1/5 p-4 mt-12 text-white">
       <Filter />
     </div>
 
