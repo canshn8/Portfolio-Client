@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { FaUpload } from "react-icons/fa"; 
+import { FaUpload } from "react-icons/fa";
+import axios from "axios";
 
-
-const ProjectCardForm = () => {
-
-
+const CreateCard = () => {
+  const [selectedImages, setSelectedImages] = useState([]);
   const [project, setProject] = useState({
     title: "",
     tag: [],
@@ -34,7 +33,7 @@ const ProjectCardForm = () => {
         ...project,
         tag: [...project.tag, value],
       });
-      setTagInput(""); 
+      setTagInput("");
     }
   };
 
@@ -57,11 +56,46 @@ const ProjectCardForm = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    setSelectedImages(e.target.files);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    Object.keys(project).forEach((key) => {
+      if (key !== 'images') {
+        formData.append(key, project[key]);
+      } else {
+        Object.keys(project.images).forEach((imageField) => {
+          if (project.images[imageField]) {
+            formData.append(imageField, selectedImages[imageField]);
+          }
+        });
+      }
+    });
+
+    try {
+      const response = await axios.post("/api/projects", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.status === 200) {
+        alert("Proje başarıyla kaydedildi!");
+      }
+    } catch (error) {
+      console.error("Bir hata oluştu: ", error);
+      alert("Proje kaydedilirken bir hata oluştu.");
+    }
+  };
+
   return (
     <div className="bg-gray-800 p-8 mt-12 rounded-lg w-full max-w-screen-xl mx-auto">
       <div className="bg-gray-900 text-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold mb-4">Proje Kartı Oluştur</h2>
-        
+
         <div className="mb-4">
           <label htmlFor="title" className="block text-sm font-medium">
             Proje Başlığı
@@ -87,7 +121,7 @@ const ProjectCardForm = () => {
             onChange={(e) => setTagInput(e.target.value)}
             onKeyDown={handleTagChange}
             className="mt-1 p-2 w-full bg-gray-700 text-white rounded-md focus:ring-2 focus:ring-cyan-500"
-            disabled={project.tag.length >= 5} 
+            disabled={project.tag.length >= 5}
           />
           <div className="flex flex-wrap mt-2">
             {project.tag.map((tag, index) => (
@@ -133,84 +167,33 @@ const ProjectCardForm = () => {
         </div>
 
         <div className="mb-4 grid grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="mainImage" className="block text-sm font-medium">
-              Ana Resim
-            </label>
-            <div
-              className="mt-1 p-2 w-full bg-gray-700 text-white rounded-md focus:ring-2 focus:ring-cyan-500 cursor-pointer"
-              onClick={() => document.getElementById("mainImage").click()}
-            >
-              <FaUpload className="text-2xl mx-auto" /> 
-              <input
-                id="mainImage"
-                name="main"
-                type="file"
-                onChange={(e) => handleImageChange(e, "main")}
-                className="hidden"
-                accept="image/png, image/jpeg"
-              />
+          {["main", "secondary1", "secondary2"].map((field, index) => (
+            <div key={index}>
+              <label htmlFor={field} className="block text-sm font-medium">
+                {field === "main" ? "Ana Resim" : `Ek Resim ${index}`}
+              </label>
+              <div
+                className="mt-1 p-2 w-full bg-gray-700 text-white rounded-md focus:ring-2 focus:ring-cyan-500 cursor-pointer"
+                onClick={() => document.getElementById(field).click()}
+              >
+                <FaUpload className="text-2xl mx-auto" />
+                <input
+                  id={field}
+                  type="file"
+                  onChange={(e) => handleImageChange(e, field)}
+                  className="hidden"
+                  accept="image/png, image/jpeg"
+                />
+              </div>
+              {project.images[field] && (
+                <img
+                  src={project.images[field]}
+                  alt={field}
+                  className="mt-2 w-full rounded-lg"
+                />
+              )}
             </div>
-            {project.images.main && (
-              <img
-                src={project.images.main}
-                alt="Ana Resim"
-                className="mt-2 w-full rounded-lg"
-              />
-            )}
-          </div>
-          <div>
-            <label htmlFor="secondaryImage1" className="block text-sm font-medium">
-              İkinci Resim
-            </label>
-            <div
-              className="mt-1 p-2 w-full bg-gray-700 text-white rounded-md focus:ring-2 focus:ring-cyan-500 cursor-pointer"
-              onClick={() => document.getElementById("secondaryImage1").click()}
-            >
-              <FaUpload className="text-2xl mx-auto" /> 
-              <input
-                id="secondaryImage1"
-                name="secondary1"
-                type="file"
-                onChange={(e) => handleImageChange(e, "secondary1")}
-                className="hidden"
-                accept="image/png, image/jpeg"
-              />
-            </div>
-            {project.images.secondary1 && (
-              <img
-                src={project.images.secondary1}
-                alt="İkinci Resim"
-                className="mt-2 w-full rounded-lg"
-              />
-            )}
-          </div>
-          <div>
-            <label htmlFor="secondaryImage2" className="block text-sm font-medium">
-              Üçüncü Resim
-            </label>
-            <div
-              className="mt-1 p-2 w-full bg-gray-700 text-white rounded-md focus:ring-2 focus:ring-cyan-500 cursor-pointer"
-              onClick={() => document.getElementById("secondaryImage2").click()}
-            >
-              <FaUpload className="text-2xl mx-auto" /> 
-              <input
-                id="secondaryImage2"
-                name="secondary2"
-                type="file"
-                onChange={(e) => handleImageChange(e, "secondary2")}
-                className="hidden"
-                accept="image/png, image/jpeg"
-              />
-            </div>
-            {project.images.secondary2 && (
-              <img
-                src={project.images.secondary2}
-                alt="Üçüncü Resim"
-                className="mt-2 w-full rounded-lg"
-              />
-            )}
-          </div>
+          ))}
         </div>
 
         <div className="mb-4">
@@ -227,7 +210,10 @@ const ProjectCardForm = () => {
           />
         </div>
 
-        <button className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-4 rounded-lg mt-4">
+        <button
+          className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-4 rounded-lg mt-4"
+          onClick={handleSubmit}
+        >
           Projeyi Kaydet
         </button>
       </div>
@@ -235,4 +221,4 @@ const ProjectCardForm = () => {
   );
 };
 
-export default ProjectCardForm;
+export default CreateCard;
