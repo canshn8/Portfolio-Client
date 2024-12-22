@@ -3,7 +3,6 @@ import { FaUpload } from "react-icons/fa";
 import axios from "axios";
 
 const CreateCard = () => {
-  const [selectedImages, setSelectedImages] = useState([]);
   const [project, setProject] = useState({
     title: "",
     tag: [],
@@ -11,9 +10,9 @@ const CreateCard = () => {
     explain: [],
     previewLink: "",
     images: {
-      main: "",
-      secondary1: "",
-      secondary2: "",
+      main: null,
+      secondary1: null,
+      secondary2: null,
     },
   });
   const [tagInput, setTagInput] = useState("");
@@ -27,11 +26,10 @@ const CreateCard = () => {
   };
 
   const handleTagChange = (e) => {
-    const { value } = e.target;
-    if (e.key === "Enter" && value && project.tag.length < 5) {
+    if (e.key === "Enter" && tagInput.trim() && project.tag.length < 5) {
       setProject({
         ...project,
-        tag: [...project.tag, value],
+        tag: [...project.tag, tagInput.trim()],
       });
       setTagInput("");
     }
@@ -42,46 +40,44 @@ const CreateCard = () => {
     if (file) {
       const allowedTypes = ["image/png", "image/jpeg"];
       if (allowedTypes.includes(file.type)) {
-        const imageUrl = URL.createObjectURL(file);
-        setProject({
-          ...project,
-          images: {
-            ...project.images,
-            [field]: imageUrl,
-          },
-        });
+        setProject((prev) => ({
+          ...prev,
+          images: { ...prev.images, [field]: file },
+        }));
       } else {
         alert("Lütfen yalnızca PNG veya JPG formatında resim yükleyin.");
       }
     }
   };
 
-  const handleFileChange = (e) => {
-    setSelectedImages(e.target.files);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     const formData = new FormData();
-    Object.keys(project).forEach((key) => {
-      if (key !== 'images') {
-        formData.append(key, project[key]);
-      } else {
-        Object.keys(project.images).forEach((imageField) => {
-          if (project.images[imageField]) {
-            formData.append(imageField, selectedImages[imageField]);
-          }
-        });
+    formData.append("title", project.title);
+    formData.append("desc", project.desc);
+    formData.append("previewLink", project.previewLink);
+    formData.append("tag", JSON.stringify(project.tag)); // Tag'i JSON olarak gönderiyoruz
+    formData.append("explain", JSON.stringify(project.explain)); // Explain'i JSON olarak gönderiyoruz
+  
+    // Görselleri ekle
+    Object.keys(project.images).forEach((key) => {
+      if (project.images[key]) {
+        formData.append(key, project.images[key]);
       }
     });
-
+  
     try {
-      const response = await axios.post("/api/projects", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/project/addProject",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+  
       if (response.status === 200) {
         alert("Proje başarıyla kaydedildi!");
       }
@@ -157,13 +153,17 @@ const CreateCard = () => {
             id="explain"
             name="explain"
             value={project.explain.join("\n")}
-            onChange={(e) => {
-              const value = e.target.value.split("\n");
-              setProject({ ...project, explain: value });
-            }}
+            onChange={(e) =>
+              setProject({ ...project, explain: e.target.value.split("\n") })
+            }
             className="mt-1 p-2 w-full bg-gray-700 text-white rounded-md focus:ring-2 focus:ring-cyan-500"
             rows="4"
           />
+          <div className="mt-2 text-xs text-gray-400">
+            {project.explain.length === 0 && (
+              <span>Her bir maddeyi yeni satıra yazın (örn. "İlk madde", "İkinci madde").</span>
+            )}
+          </div>
         </div>
 
         <div className="mb-4 grid grid-cols-2 gap-4">
@@ -187,7 +187,7 @@ const CreateCard = () => {
               </div>
               {project.images[field] && (
                 <img
-                  src={project.images[field]}
+                  src={URL.createObjectURL(project.images[field])}
                   alt={field}
                   className="mt-2 w-full rounded-lg"
                 />
