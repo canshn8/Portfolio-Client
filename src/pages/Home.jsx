@@ -15,7 +15,7 @@ const Home = () => {
     setShowToast(true); 
     setTimeout(() => {
       setShowToast(false); 
-    }, 8000);
+    }, 5000);
   }, []);
 
   return (
@@ -24,7 +24,7 @@ const Home = () => {
         {showToast && (
           <div className="fixed top-0 left-0 w-full p-4 bg-blue-500 text-white text-center shadow-lg z-50">
             <p className="font-semibold">
-              Hoş geldiniz! Portföyümdeki içerikler her an güncellenmektedir. Lütfen sık sık kontrol edin.
+              Hoş geldiniz! Portföyümdeki bazı içerikler her an güncellenmektedir. Lütfen sık sık kontrol edin.
             </p>
           </div>
         )}
