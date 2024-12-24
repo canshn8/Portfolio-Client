@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function Contact() {
-  // Form verilerini state içinde tutma
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [subject, setSubject] = useState("");
 
-  // Form gönderme fonksiyonu
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -16,24 +13,19 @@ function Contact() {
       fullName,
       email,
       message,
-      subject,
     };
 
     try {
-      // Backend'e POST isteği gönderme
       const response = await axios.post("http://localhost:5000/api/contact", formData);
 
       if (response.status === 200) {
-        alert("Email sent successfully!");
-        // Formu sıfırlama
         setFullName("");
         setEmail("");
         setMessage("");
-        setSubject("");
+        alert("Mesajınız İletildi!")
       }
     } catch (error) {
       console.error("Error sending email:", error);
-      alert("Error sending email, please try again.");
     }
   };
 
@@ -55,7 +47,7 @@ function Contact() {
           <h2 className="text-gray-800 text-3xl font-extrabold">Contact</h2>
           <p className="text-lg text-gray-500 mt-4 leading-relaxed">
             Hi, if you have any questions or want to ask me anything contact me,
-            just fill in the subject and content fields and send.
+            just fill in the content fields and send.
           </p>
 
           <form onSubmit={handleSubmit}>
@@ -88,12 +80,6 @@ function Contact() {
                 placeholder="Write Message"
                 className="px-2 pt-3 bg-white w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 outline-none"
               ></textarea>
-              <input
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                placeholder="Subject"
-                className="px-2 py-3 bg-white w-full text-gray-800 text-sm border-b border-gray-300 focus:border-blue-600 outline-none"
-              />
             </div>
 
             <button
