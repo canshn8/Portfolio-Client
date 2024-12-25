@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const reqUrl = "https://portfolio-server-canshn8s-projects.vercel.app/api"; 
+export const reqUrl = "https://cansahin.vercel.app/api"; 
 
 const request = async (method, url, data) => {
   const storedUser = localStorage.getItem("persist:root");
