@@ -1,5 +1,7 @@
 import axios from "axios";
 
+export const reqUrl = "https://portfolio-server-canshn8s-projects.vercel.app/api"; 
+
 const request = async (method, url, data) => {
   const storedUser = localStorage.getItem("persist:root");
   let TOKEN = null;
@@ -7,24 +9,24 @@ const request = async (method, url, data) => {
   if (storedUser) {
     const user = JSON.parse(JSON.parse(storedUser).user);
     if (user && user.currentUser) {
-      TOKEN = user.currentUser.accessToken; 
+      TOKEN = user.currentUser.accessToken;
     }
   }
 
-  const headers = TOKEN ? { token: `Bearer ${TOKEN}` } : {}; 
+  const headers = TOKEN ? { token: `Bearer ${TOKEN}` } : {};
 
   try {
     const res = await axios({
       method,
-      url: `http://localhost:5000/api${url}`,
+      url: `${reqUrl}${url}`,
       data,
-      headers, 
+      headers,
     });
     return res.data;
   } catch (err) {
-    console.error("API request failed", err);
-    throw err; 
+    console.error("API request failed", err.response ? err.response.data : err);
+    throw err;
   }
 };
 
-export default request;
+export default { request };

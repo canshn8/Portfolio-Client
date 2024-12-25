@@ -3,6 +3,7 @@ import { FiGithub, FiInstagram } from "react-icons/fi";
 import { CiLinkedin } from "react-icons/ci";
 import { FaRegFilePdf } from "react-icons/fa6";
 import PP from "../uploads/fixed.jpg";
+import { reqUrl } from "../api";
 import axios from "axios";
 
 const Header =() =>  {
@@ -19,7 +20,7 @@ const Header =() =>  {
   const handleDownloadTr = async () => {
     try {
       const response = await axios({
-        url: "http://localhost:5000/api/turkish-cv.pdf", 
+        url: reqUrl+`/turkish-cv.pdf`, 
         method: "GET",
         responseType: "blob",
       });
@@ -39,7 +40,7 @@ const Header =() =>  {
   const handleDownloadEn = async () => {
     try {
       const response = await axios({
-        url: "http://localhost:5000/api/english-cv.pdf", 
+        url: `${reqUrl}/english-cv.pdf`, 
         method: "GET",
         responseType: "blob",
       });

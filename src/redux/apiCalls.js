@@ -11,6 +11,7 @@ import {
 } from "./userSlice";
 import { addProjectSuccess, getProjectSuccess } from "./projectSlice";
 import request from "../api";
+import { reqUrl } from "../api";
 
 import axios from "axios";
 
@@ -55,7 +56,7 @@ export const addProject = async (project, dispatch) => {
 
 export const getProject = async (dispatch) => {
   try {
-    const res = await axios.get("http://localhost:5000/api/project");
+    const res = await axios.get(`${reqUrl}/project`);
     dispatch(getProjectSuccess(res.data));
   } catch {}
 };

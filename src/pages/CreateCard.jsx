@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaUpload } from "react-icons/fa";
 import axios from "axios";
+import { reqUrl } from "../api";
 
 const CreateCard = () => {
   const [project, setProject] = useState({
@@ -57,10 +58,9 @@ const CreateCard = () => {
     formData.append("title", project.title);
     formData.append("desc", project.desc);
     formData.append("previewLink", project.previewLink);
-    formData.append("tag", JSON.stringify(project.tag)); // Tag'i JSON olarak gönderiyoruz
-    formData.append("explain", JSON.stringify(project.explain)); // Explain'i JSON olarak gönderiyoruz
+    formData.append("tag", JSON.stringify(project.tag));
+    formData.append("explain", JSON.stringify(project.explain));
   
-    // Görselleri ekle
     Object.keys(project.images).forEach((key) => {
       if (project.images[key]) {
         formData.append(key, project.images[key]);
@@ -69,7 +69,7 @@ const CreateCard = () => {
   
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/project/addProject",
+        `${reqUrl}/project/addProject`,
         formData,
         {
           headers: {
