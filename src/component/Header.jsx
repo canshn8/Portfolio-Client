@@ -20,7 +20,7 @@ const Header =() =>  {
   const handleDownloadTr = async () => {
     try {
       const response = await axios({
-        url: reqUrl+`/turkish-cv.pdf`, 
+        url: `${reqUrl}/turkish-cv.pdf`, 
         method: "GET",
         responseType: "blob",
       });
