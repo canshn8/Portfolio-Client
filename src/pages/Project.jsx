@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import { reqUrl } from "../api";
+
 
 function Project() {
   const [project, setProject] = useState({});
@@ -11,7 +13,7 @@ function Project() {
   useEffect(() => {
     const getProject = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/project/" + id);
+        const res = await axios.get(`${reqUrl}/project/` + id);
         setProject(res.data);
       } catch (err) {
         console.error("Error fetching project:", err);
@@ -30,7 +32,7 @@ function Project() {
   }, [project]);
 
   const formattedTags = Array.isArray(project?.tag)
-  ? project.tag // Eğer tag bir dizi ise olduğu gibi kullan
+  ? project.tag 
   : project?.tag?.split(',').map(tag => tag.trim().replace(/"/g, '')) || [];
 
 

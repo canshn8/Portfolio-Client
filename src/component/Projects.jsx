@@ -2,6 +2,8 @@ import { React, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Filter from "./Filter";
+import { reqUrl } from "../api";
+
 
 export default function Projects() {
 
@@ -10,7 +12,7 @@ export default function Projects() {
   useEffect(() => {
     const getProject = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/project");
+        const res = await axios.get(`${reqUrl}/project`);
         setProjects(res.data);
       } catch (err) {
         console.log(err);
