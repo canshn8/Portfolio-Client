@@ -56,7 +56,7 @@ const Header = () => {
                 <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                   <img
                     class="mr-4 w-16 h-16 rounded-full object-cover"
-                    src={PP}
+                    src={"PP"}
                     alt="Hasan Can Şahin"
                   />
                   <div>
