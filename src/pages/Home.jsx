@@ -20,7 +20,7 @@ const Home = () => {
 
   return (
     <>
-       <div className="relative">
+{/*        <div className="relative">
         {showToast && (
           <div className="fixed top-0 left-0 w-full p-4 bg-blue-500 text-white text-center shadow-lg z-50">
             <p className="font-semibold">
@@ -34,7 +34,11 @@ const Home = () => {
             <Projects />
           </div>
         </div>
-      </div>
+      </div> */}
+      <Header />
+      <Body />
+      <Projects />
+      <Drawer />
     </>
 
   );
