@@ -15,6 +15,7 @@ function Home() {
       <Projects />
       <CurriculumVitae />
     </div>
+    
   );
 }
 
