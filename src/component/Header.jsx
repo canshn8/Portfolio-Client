@@ -2,7 +2,7 @@ import React from "react";
 import { FiGithub, FiInstagram } from "react-icons/fi";
 import { CiLinkedin } from "react-icons/ci";
 import { FaRegFilePdf } from "react-icons/fa6";
-import PP from "../assets/fixed.jpg";
+
 
 const Header = () => {
   return(
@@ -10,7 +10,7 @@ const Header = () => {
      <div className="mt-36 max-w-screen-lg mx-auto md:px-16 px-1">
       <img
         className="absolute object-contain top-1/3 left-2/3 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 rounded-full w-52 h-52  hover:scale-150"
-        src={PP}
+        src="https://i.ibb.co/nqT5G7ym/fixed.jpg"
         alt="image description"
       />
       <h1 className="mb-4 text-sm font-bold text-gray-900 dark:text-white md:text-xl lg:text-2xl">
@@ -56,7 +56,7 @@ const Header = () => {
                 <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                   <img
                     class="mr-4 w-16 h-16 rounded-full object-cover"
-                    src={"PP"}
+                    src="https://i.ibb.co/nqT5G7ym/fixed.jpg"
                     alt="Hasan Can Şahin"
                   />
                   <div>
