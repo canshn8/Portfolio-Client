@@ -12,7 +12,6 @@ function Home() {
       <Header />
       <Body />
       <Projects />
-      <CurriculumVitae />
     </div>
     
   );
